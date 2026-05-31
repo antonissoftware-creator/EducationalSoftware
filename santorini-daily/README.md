@@ -244,8 +244,7 @@ chore(scope): short description
 ## 13. Notes on Figma / Design Sync
 
 - Screenshots from `/draft` are used as visual parity references.
-- Figma MCP may require re-auth if token expires.
-- If MCP auth is blocked, export assets manually from Figma and place in `public/images/*`.
+- Export assets from design files and place them in `public/images/*` when updating UI visuals.
 
 ## 14. Where to Start as a Junior Dev
 

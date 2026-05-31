@@ -26,7 +26,7 @@ Important files:
 - `Docs/DESIGN.md`
   - Design system direction (colors, typography, spacing, look & feel).
 - `Docs/santorini_webapp_implementation_guide.md`
-  - Implementation-focused guide (including Figma MCP workflow and commit cadence).
+  - Implementation-focused guide with commit cadence and execution standards.
 
 ### `santorini-daily/`
 The working web application.
@@ -98,7 +98,7 @@ Current repository already includes:
 ## 7. Notes
 
 - Prisma migration lock file (`prisma/migrations/migration_lock.toml`) is intentionally committed.
-- If Figma MCP auth expires, assets can be exported manually and placed in `public/images/*`.
+- Place exported design assets in `public/images/*` when updating visuals.
 
 ---
 

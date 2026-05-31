@@ -24,18 +24,13 @@ This guide implements the webapp-only scope of `Docs/santorini_daily_execution_p
   - `feat(data): add prisma schema seed and backend libs`
   - `feat(app): implement pages and API routes for core flows`
 
-## Figma MCP Read Workflow (Required)
-Use Figma as design input only (no redesign). File URL:
-`https://www.figma.com/design/UnKhS3DqvedPavAtFnGdlr/Educational-Software?node-id=2-856&t=h5kfvhgovlyMqlTo-1`
+## Design Intake Workflow
+Use the provided design file and screenshots as implementation references only (no redesign).
 
-1. Extract `fileKey=UnKhS3DqvedPavAtFnGdlr` and initial node `2:856`.
-2. Run `whoami` first.
-3. If you get `token_expired`, re-authenticate Figma MCP before continuing.
-4. Call `get_metadata(fileKey)` to list top-level pages.
-5. Call `get_metadata(fileKey,nodeId)` for each target screen tree.
-6. Call `get_design_context(fileKey,nodeId)` for each implemented screen.
-7. Call `get_screenshot(fileKey,nodeId,maxDimension=2048)` for visual QA.
-8. Only if needed, use `use_figma` in read-only scripts and pass `skillNames: "figma-use"`.
+1. Map each application route to its corresponding reference screen.
+2. Capture visual details (spacing, typography, hierarchy, states) from the reference screens.
+3. Implement UI using project components and design tokens.
+4. Validate visual parity with side-by-side screenshot checks at target breakpoints.
 
 ## Code Commenting Standard (Entire Codebase)
 - English only.
