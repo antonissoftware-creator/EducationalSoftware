@@ -1,26 +1,42 @@
+"use client";
+
 export const dynamic = "force-dynamic";
 
+import dynamicImport from "next/dynamic";
+import { useEffect, useState } from "react";
 import { SiteShell } from "@/components/layout/site-shell";
-import { prisma } from "@/lib/prisma";
 
-export default async function MapPage() {
-  const places = await prisma.place.findMany({ orderBy: { titleEn: "asc" } });
+const MapCanvas = dynamicImport(() => import("@/components/map/map-canvas").then((m) => m.MapCanvas), {
+  ssr: false,
+  loading: () => <div className="h-[540px] animate-pulse rounded-md bg-[#d8d4cb]" />,
+});
 
-  return (
-    <SiteShell>
-      <h1 className="mb-6 text-4xl font-semibold text-[var(--color-primary)]">Interactive Map</h1>
-      <p className="mb-6 text-[var(--color-on-surface-variant)]">Leaflet integration placeholder with all mapped locations.</p>
-      <div className="grid gap-4 md:grid-cols-2">
-        {places.map((place) => (
-          <article key={place.id} className="rounded-lg border border-[var(--color-outline-variant)]/40 bg-[var(--color-surface)] p-5">
-            <h2 className="text-xl font-semibold text-[var(--color-primary)]">{place.titleEn}</h2>
-            <p className="mt-2 text-sm text-[var(--color-on-surface-variant)]">{place.descriptionEn}</p>
-            <p className="mt-2 text-xs uppercase tracking-wide text-[var(--color-secondary)]">
-              {place.category} • {place.latitude.toFixed(3)}, {place.longitude.toFixed(3)}
-            </p>
-          </article>
-        ))}
-      </div>
-    </SiteShell>
-  );
+type PlaceItem = {
+  id: string;
+  titleEn: string;
+  descriptionEn: string;
+  category: string;
+  latitude: number;
+  longitude: number;
+};
+
+export default function MapPage() {
+  const [places, setPlaces] = useState<PlaceItem[]>([]);
+
+  useEffect(() => {
+    let mounted = true;
+    fetch("/api/places")
+      .then((res) => res.json())
+      .then((data) => {
+        if (mounted) setPlaces(Array.isArray(data) ? data : []);
+      })
+      .catch(() => {
+        if (mounted) setPlaces([]);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  return <SiteShell>{places.length ? <MapCanvas places={places} /> : <div className="h-[540px] animate-pulse rounded-md bg-[#d8d4cb]" />}</SiteShell>;
 }
