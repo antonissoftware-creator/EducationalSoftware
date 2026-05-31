@@ -1,0 +1,58 @@
+import { z } from "zod";
+import { badRequest, notFound, ok } from "@/lib/http";
+import { prisma } from "@/lib/prisma";
+
+const schema = z.object({
+  attemptId: z.string(),
+  answers: z.array(z.object({ questionId: z.string(), selectedOptionId: z.string().nullable() })),
+  timeSpentSeconds: z.number().int().min(0).default(0),
+});
+
+export async function POST(req: Request, { params }: { params: Promise<{ quizId: string }> }) {
+  const { quizId } = await params;
+  const parsed = schema.safeParse(await req.json());
+  if (!parsed.success) return badRequest("Invalid payload");
+
+  const attempt = await prisma.quizAttempt.findFirst({ where: { id: parsed.data.attemptId, quizId } });
+  if (!attempt) return notFound("Attempt not found");
+
+  const options = await prisma.questionOption.findMany({
+    where: { questionId: { in: parsed.data.answers.map((a) => a.questionId) } },
+  });
+
+  const correctByQuestion = new Map<string, string>();
+  for (const option of options) {
+    if (option.isCorrect) correctByQuestion.set(option.questionId, option.id);
+  }
+
+  let correct = 0;
+  for (const answer of parsed.data.answers) {
+    const isCorrect = correctByQuestion.get(answer.questionId) === answer.selectedOptionId;
+    if (isCorrect) correct += 1;
+
+    await prisma.userAnswer.create({
+      data: {
+        quizAttemptId: attempt.id,
+        questionId: answer.questionId,
+        selectedOptionId: answer.selectedOptionId,
+        isCorrect,
+      },
+    });
+  }
+
+  const total = parsed.data.answers.length || 1;
+  const score = (correct / total) * 100;
+
+  await prisma.quizAttempt.update({
+    where: { id: attempt.id },
+    data: {
+      correctAnswers: correct,
+      totalQuestions: total,
+      score,
+      completedAt: new Date(),
+      timeSpentSeconds: parsed.data.timeSpentSeconds,
+    },
+  });
+
+  return ok({ score, correctAnswers: correct, totalQuestions: total });
+}
