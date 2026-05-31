@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { notFound } from "next/navigation";
-import { SiteShell } from "@/components/layout/site-shell";
+import { QuizStepper } from "@/components/quiz/quiz-stepper";
 import { prisma } from "@/lib/prisma";
 
 export default async function ModuleQuizPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -16,24 +16,18 @@ export default async function ModuleQuizPage({ params }: { params: Promise<{ slu
     },
   });
 
-  if (!quiz) notFound();
+  if (!quiz || quiz.questions.length === 0) notFound();
 
   return (
-    <SiteShell>
-      <h1 className="mb-6 text-4xl font-semibold text-[var(--color-primary)]">{quiz.titleEn}</h1>
-      <div className="space-y-4">
-        {quiz.questions.map((question, index) => (
-          <article key={question.id} className="rounded-lg border border-[var(--color-outline-variant)]/40 bg-[var(--color-surface)] p-5">
-            <h2 className="font-semibold">Q{index + 1}. {question.questionEn}</h2>
-            <ul className="mt-3 space-y-2 text-sm text-[var(--color-on-surface-variant)]">
-              {question.options.map((opt) => (
-                <li key={opt.id}>• {opt.textEn}</li>
-              ))}
-            </ul>
-          </article>
-        ))}
-      </div>
-      <p className="mt-6 text-sm text-[var(--color-on-surface-variant)]">Quiz submission endpoint: /api/quizzes/[quizId]/submit</p>
-    </SiteShell>
+    <div className="min-h-screen bg-[#f2f0ea] px-4 py-8 md:px-8 md:py-10">
+      <QuizStepper
+        title={quiz.titleEn}
+        questions={quiz.questions.map((question) => ({
+          id: question.id,
+          questionEn: question.questionEn,
+          options: question.options.map((option) => ({ id: option.id, textEn: option.textEn })),
+        }))}
+      />
+    </div>
   );
 }
