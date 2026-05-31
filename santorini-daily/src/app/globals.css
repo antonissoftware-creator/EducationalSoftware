@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+:root {
+  --color-background: #fdf9f1;
+  --color-on-background: #1c1c17;
+  --color-surface: #fdf9f1;
+  --color-primary: #00426d;
+  --color-secondary: #465f88;
+  --color-tertiary: #735c00;
+  --color-outline-variant: #c1c7d1;
+  --color-on-surface-variant: #414750;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-on-background);
+  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Playfair Display", ui-serif, Georgia, serif;
+}
