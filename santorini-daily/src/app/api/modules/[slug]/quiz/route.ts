@@ -1,9 +1,9 @@
 import { badRequest, notFound, ok } from "@/lib/http";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(_: Request, { params }: { params: Promise<{ moduleSlug: string }> }) {
-  const { moduleSlug } = await params;
-  const learningModule = await prisma.module.findUnique({ where: { slug: moduleSlug } });
+export async function GET(_: Request, { params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const learningModule = await prisma.module.findUnique({ where: { slug } });
   if (!learningModule) return notFound("Module not found");
 
   const quiz = await prisma.quiz.findFirst({ where: { moduleId: learningModule.id, type: "module" } });
