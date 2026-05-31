@@ -243,10 +243,9 @@ chore(scope): short description
 
 ## 13. Notes on Figma / Design Sync
 
-- Screenshots from `/draft` are used as visual parity references.
 - Export assets from design files and place them in `public/images/*` when updating UI visuals.
 
-## 14. Where to Start as a Junior Dev
+## 14. Where to Start
 
 Recommended learning order:
 
