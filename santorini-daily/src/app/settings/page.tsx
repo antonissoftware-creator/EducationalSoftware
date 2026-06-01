@@ -10,12 +10,12 @@ export default async function SettingsPage() {
 
   return (
     <SiteShell>
-      <h1 className="text-7xl leading-[0.95] text-[#232a33]">Configuration</h1>
+      <h1 className="text-6xl leading-[0.95] text-[#232a33]">Configuration</h1>
       <p className="mt-2 text-sm text-[#5f6977]">Manage your archival experience and AI tutor preferences.</p>
 
       <div className="mt-8 space-y-8">
         <section className="rounded-md border border-[#d8d4cb] bg-[#f8f7f4] p-6">
-          <h2 className="text-5xl text-[#0b4f7d]">General Preferences</h2>
+          <h2 className="text-4xl text-[#0b4f7d]">General Preferences</h2>
 
           <div className="mt-8 space-y-6">
             <div className="flex flex-col gap-3 border-b border-[#e1ddd5] pb-6 md:flex-row md:items-center md:justify-between">
@@ -38,7 +38,7 @@ export default async function SettingsPage() {
         </section>
 
         <section className="rounded-md border border-[#d8d4cb] border-t-[3px] border-t-[#c69e14] bg-[#f8f7f4] p-6">
-          <h2 className="text-5xl text-[#0b4f7d]">AI Tutor Integration</h2>
+          <h2 className="text-4xl text-[#0b4f7d]">AI Tutor Integration</h2>
 
           <div className="mt-8 space-y-7">
             <div className="flex items-center justify-between gap-4">
@@ -67,7 +67,7 @@ export default async function SettingsPage() {
         </section>
 
         <section className="rounded-md border border-[#d8d4cb] bg-[#f8f7f4] p-6">
-          <h2 className="text-5xl text-[#0b4f7d]">Accessibility</h2>
+          <h2 className="text-4xl text-[#0b4f7d]">Accessibility</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             <article className="rounded bg-[#f2f0ea] p-4">
               <p className="text-sm font-semibold">High Contrast</p>

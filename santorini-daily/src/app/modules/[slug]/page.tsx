@@ -26,7 +26,7 @@ export default async function ModuleDetailPage({ params }: { params: Promise<{ s
         <span className="rounded-full border border-[#ccd3dd] bg-[#edf2f7] px-2 py-1 text-[#375678]">Archaeology</span>
       </div>
 
-      <h1 className="max-w-[730px] text-7xl leading-[0.95] text-[#232a33]">{learningModule.titleEn}</h1>
+      <h1 className="max-w-[730px] text-6xl leading-[0.95] text-[#232a33]">{learningModule.titleEn}</h1>
       <p className="mt-4 max-w-[760px] text-sm leading-7 text-[#5c6675]">{learningModule.descriptionEn}</p>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[2fr_1fr]">
@@ -39,7 +39,7 @@ export default async function ModuleDetailPage({ params }: { params: Promise<{ s
 
         <aside className="space-y-3">
           <section className="rounded-md border border-[#d6d1c8] bg-[#f8f7f4] p-4">
-            <h2 className="mb-3 flex items-center gap-2 text-4xl text-[#1f2833]"><CircleAlert className="h-4 w-4 text-[#0b4f7d]" /> Archival Data</h2>
+            <h2 className="mb-3 flex items-center gap-2 text-3xl text-[#1f2833]"><CircleAlert className="h-4 w-4 text-[#0b4f7d]" /> Archival Data</h2>
             <dl className="space-y-2 text-xs text-[#54606e]">
               <div className="flex justify-between"><dt>Era</dt><dd>Late Minoan IA</dd></div>
               <div className="flex justify-between"><dt>Eruption Date</dt><dd>~1620–1500 BC</dd></div>
@@ -49,7 +49,7 @@ export default async function ModuleDetailPage({ params }: { params: Promise<{ s
           </section>
 
           <section className="rounded-md border border-[#d6d1c8] bg-[#f8f7f4] p-4">
-            <h3 className="mb-2 text-4xl text-[#1f2833]">Related Locations</h3>
+            <h3 className="mb-2 text-3xl text-[#1f2833]">Related Locations</h3>
             <div className="space-y-2">
               {topPlaces.map((place, idx) => (
                 <div key={place.id} className="flex items-center gap-3 rounded bg-[#f1eee8] p-2 text-xs text-[#46505d]">
@@ -67,7 +67,7 @@ export default async function ModuleDetailPage({ params }: { params: Promise<{ s
       </div>
 
       <section className="mt-8 rounded-md border border-[#d6d1c8] bg-[#f8f7f4] p-5">
-        <h2 className="mb-3 text-5xl text-[#232a33]">Learning Objectives</h2>
+        <h2 className="mb-3 text-4xl text-[#232a33]">Learning Objectives</h2>
         <ul className="space-y-2 text-sm text-[#525d6b]">
           <li>Understand the timeline and societal context of the Theran eruption.</li>
           <li>Identify key architectural features and urban planning systems.</li>
@@ -77,7 +77,7 @@ export default async function ModuleDetailPage({ params }: { params: Promise<{ s
 
       <section className="mt-10 space-y-8">
         <article>
-          <h2 className="text-6xl text-[#232a33]">The Ash That Preserved Time</h2>
+          <h2 className="text-5xl text-[#232a33]">The Ash That Preserved Time</h2>
           <p className="mt-3 max-w-[760px] text-sm leading-7 text-[#596373]">{learningModule.sections[0]?.contentEn ?? "Preserved by volcanic layers, Akrotiri offers a rare intact snapshot of Bronze Age life and infrastructure."}</p>
         </article>
 
@@ -93,14 +93,14 @@ export default async function ModuleDetailPage({ params }: { params: Promise<{ s
         </div>
 
         <article>
-          <h3 className="text-6xl text-[#232a33]">Advanced Urban Planning</h3>
+          <h3 className="text-5xl text-[#232a33]">Advanced Urban Planning</h3>
           <p className="mt-3 max-w-[760px] text-sm leading-7 text-[#596373]">{learningModule.sections[1]?.contentEn ?? "The settlement demonstrates paved streets, engineered drainage, and multi-level architecture uncommon for its period."}</p>
         </article>
       </section>
 
       <section className="mt-10 flex flex-wrap items-center justify-between gap-4 rounded-md bg-[#0b4f7d] p-6 text-white">
         <div>
-          <h3 className="text-5xl">Test Your Knowledge</h3>
+          <h3 className="text-4xl">Test Your Knowledge</h3>
           <p className="mt-1 text-sm text-[#dce8f2]">Complete the module quiz to earn your archival badge.</p>
         </div>
         <Link href={`/modules/${learningModule.slug}/quiz`} className="inline-flex items-center gap-2 rounded bg-[#5ba2dd] px-5 py-2.5 text-sm font-semibold text-[#083557]">

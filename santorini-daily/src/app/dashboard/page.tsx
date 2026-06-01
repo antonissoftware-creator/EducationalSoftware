@@ -12,12 +12,12 @@ export default async function DashboardPage() {
 
   return (
     <SiteShell>
-      <h1 className="text-7xl text-[#0b4f7d]">Archival Progress</h1>
+      <h1 className="text-6xl text-[#0b4f7d]">Archival Progress</h1>
       <p className="mt-3 max-w-[760px] text-lg text-[#4f5968]">Track your journey through the layers of Akrotiri and your quiz consistency.</p>
 
       <div className="mt-8 grid gap-5 xl:grid-cols-[1.1fr_1.5fr]">
         <section className="rounded-md border border-[#d8d4cb] bg-[#f8f7f4] p-6">
-          <h2 className="text-5xl text-[#232a33]">Course Completion</h2>
+          <h2 className="text-4xl text-[#232a33]">Course Completion</h2>
           <div className="mx-auto mt-8 flex h-44 w-44 items-center justify-center rounded-full border-[10px] border-[#0b4f7d] text-center">
             <p className="font-serif text-6xl text-[#0b4f7d]">{Math.round(average)}<span className="text-3xl">%</span></p>
           </div>
@@ -43,7 +43,7 @@ export default async function DashboardPage() {
             <div className="flex flex-wrap items-center justify-between gap-3 p-4">
               <div>
                 <span className="rounded border border-[#d6d1c8] px-2 py-1 text-[10px] uppercase text-[#6e7783]">UP NEXT</span>
-                <h3 className="mt-2 text-5xl text-[#0b4f7d]">The Maritime Frescoes</h3>
+                <h3 className="mt-2 text-4xl text-[#0b4f7d]">The Maritime Frescoes</h3>
                 <p className="mt-1 text-sm text-[#6a7381]">Module 5 • Est. 45 mins</p>
               </div>
               <button type="button" className="rounded bg-[#0b4f7d] px-5 py-2.5 text-sm font-semibold text-white">Resume Study</button>

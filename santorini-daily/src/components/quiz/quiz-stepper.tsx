@@ -22,7 +22,7 @@ export function QuizStepper({
   return (
     <div className="mx-auto w-full max-w-[760px]">
       <div className="mb-8 text-center">
-        <p className="font-serif text-5xl leading-none text-[#0b4f7d]">Santorini Daily</p>
+        <p className="font-serif text-4xl leading-none text-[#0b4f7d]">Santorini Daily</p>
         <div className="mt-8 inline-block rounded-full border border-[#cfccd7] bg-[#eef3f7] px-4 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#0b4f7d]">
           {title}
         </div>
@@ -37,7 +37,7 @@ export function QuizStepper({
       <div className="rounded-lg border border-[#d8d4cb] bg-[#f8f7f4] shadow-sm">
         <div className="h-[2px] rounded-t-lg bg-[#c69e14]" />
         <div className="space-y-8 p-7 md:p-10">
-          <h1 className="text-center text-[44px] leading-tight text-[#232a33] md:text-[52px]">{current.questionEn}</h1>
+          <h1 className="text-center text-[36px] leading-tight text-[#232a33] md:text-[44px]">{current.questionEn}</h1>
 
           <div className="space-y-3">
             {current.options.map((option) => {

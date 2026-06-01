@@ -17,9 +17,9 @@ export function SidebarNav() {
   const pathname = usePathname();
 
   return (
-    <aside className="sticky top-0 hidden h-screen w-[180px] shrink-0 border-r border-[#d9d6cf] bg-[#f2f0ea] lg:flex lg:flex-col">
+    <aside className="sticky top-0 hidden h-screen w-[250px] shrink-0 border-r border-[#d9d6cf] bg-[#f2f0ea] lg:flex lg:flex-col">
       <div className="px-6 py-6">
-        <Link href="/" className="font-serif text-[36px] leading-none text-[#0b4f7d]">
+        <Link href="/" className="font-serif text-[28px] leading-none text-[#0b4f7d]">
           Santorini Daily
         </Link>
       </div>
