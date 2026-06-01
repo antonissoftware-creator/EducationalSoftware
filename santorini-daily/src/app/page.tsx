@@ -29,7 +29,7 @@ export default async function HomePage() {
         <div className="absolute inset-x-0 bottom-8 mx-auto flex max-w-[520px] flex-col items-center px-5 text-center text-white md:bottom-12">
           <h1 className="text-5xl leading-none md:text-6xl">Santorini Daily</h1>
           <p className="mt-4 text-sm text-[#f1eee8] md:text-xl">Your digital guide to the history, culture, and wonders of the Aegean.</p>
-          <Link href="/modules" className="mt-6 inline-flex items-center gap-2 rounded bg-[#0b4f7d] px-8 py-3 text-sm font-semibold">
+          <Link href="/modules" className="mt-6 inline-flex items-center gap-2 rounded bg-[#0b4f7d] px-8 py-3 text-sm font-semibold text-white">
             Start Exploring <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

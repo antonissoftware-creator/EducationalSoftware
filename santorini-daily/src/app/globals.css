@@ -42,3 +42,7 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.leaflet-container a {
+  color: #fff !important;
+}

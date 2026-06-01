@@ -103,7 +103,7 @@ export default async function ModuleDetailPage({ params }: { params: Promise<{ s
           <h3 className="text-4xl">Test Your Knowledge</h3>
           <p className="mt-1 text-sm text-[#dce8f2]">Complete the module quiz to earn your archival badge.</p>
         </div>
-        <Link href={`/modules/${learningModule.slug}/quiz`} className="inline-flex items-center gap-2 rounded bg-[#5ba2dd] px-5 py-2.5 text-sm font-semibold text-[#083557]">
+        <Link href={`/modules/${learningModule.slug}/quiz`} className="inline-flex items-center gap-2 rounded bg-[#5ba2dd] px-5 py-2.5 text-sm font-semibold text-white">
           Take Quiz <MoveRight className="h-4 w-4" />
         </Link>
       </section>
