@@ -1,10 +1,12 @@
-import { getLanguage, pickLocalized } from "@/lib/i18n";
+import { pickLocalized, resolveLanguage } from "@/lib/i18n";
 import { notFound, ok } from "@/lib/http";
 import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/auth";
 
 export async function GET(req: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { searchParams } = new URL(req.url);
-  const lang = getLanguage(searchParams.get("lang"));
+  const user = await getCurrentUser();
+  const lang = resolveLanguage(user?.preferredLanguage, searchParams.get("lang"));
   const { slug } = await params;
 
   const learningModule = await prisma.module.findUnique({ where: { slug } });

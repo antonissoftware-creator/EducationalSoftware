@@ -5,15 +5,32 @@ import { useMemo, useRef, useState } from "react";
 
 type QuizOption = { id: string; textEn: string };
 type QuizQuestion = { id: string; questionEn: string; options: QuizOption[] };
+type QuizLabels = {
+  quizComplete: string;
+  youAnswered: string;
+  outOf: string;
+  correctly: string;
+  viewProgress: string;
+  question: string;
+  of: string;
+  previous: string;
+  submitting: string;
+  submitQuiz: string;
+  nextQuestion: string;
+  quizStartError: string;
+  quizSubmitError: string;
+};
 
 export function QuizStepper({
   quizId,
   title,
   questions,
+  labels,
 }: {
   quizId: string;
   title: string;
   questions: QuizQuestion[];
+  labels: QuizLabels;
 }) {
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<Record<string, string>>({});
@@ -48,7 +65,7 @@ export function QuizStepper({
     const currentAttemptId = await ensureAttempt();
     if (!currentAttemptId) {
       setLoading(false);
-      setError("Could not start quiz attempt.");
+      setError(labels.quizStartError);
       return;
     }
 
@@ -69,7 +86,7 @@ export function QuizStepper({
 
     if (!response.ok) {
       setLoading(false);
-      setError("Could not submit quiz. Please try again.");
+      setError(labels.quizSubmitError);
       return;
     }
 
@@ -81,13 +98,13 @@ export function QuizStepper({
   if (submitted) {
     return (
       <div className="mx-auto w-full max-w-[760px] rounded-lg border border-[#d8d4cb] bg-[#f8f7f4] p-8 text-center">
-        <p className="font-serif text-4xl leading-none text-[#0b4f7d]">Quiz Complete</p>
+        <p className="font-serif text-4xl leading-none text-[#0b4f7d]">{labels.quizComplete}</p>
         <p className="mt-4 text-5xl font-semibold text-[#232a33]">{Math.round(submitted.score)}%</p>
         <p className="mt-2 text-sm text-[#5c6774]">
-          You answered {submitted.correctAnswers} out of {submitted.totalQuestions} correctly.
+          {labels.youAnswered} {submitted.correctAnswers} {labels.outOf} {submitted.totalQuestions} {labels.correctly}
         </p>
         <Link href="/dashboard" className="mt-6 inline-flex rounded bg-[#0b4f7d] px-6 py-2.5 text-sm font-semibold text-white">
-          View Progress
+          {labels.viewProgress}
         </Link>
       </div>
     );
@@ -101,7 +118,7 @@ export function QuizStepper({
           {title}
         </div>
         <div className="mt-5 flex items-center justify-center gap-3">
-          <p className="text-sm font-semibold text-[#2f4a68]">Question {step + 1} of {questions.length}</p>
+          <p className="text-sm font-semibold text-[#2f4a68]">{labels.question} {step + 1} {labels.of} {questions.length}</p>
           <div className="h-1.5 w-36 overflow-hidden rounded-full bg-[#d9d6cf]">
             <div className="h-full bg-[#c69e14]" style={{ width: `${progress}%` }} />
           </div>
@@ -141,7 +158,7 @@ export function QuizStepper({
               disabled={step === 0 || loading}
               className="rounded border border-[#bfc7d1] px-4 py-2 text-sm disabled:opacity-40"
             >
-              Previous
+              {labels.previous}
             </button>
             <button
               type="button"
@@ -149,7 +166,7 @@ export function QuizStepper({
               disabled={!selected[current.id] || loading}
               className="rounded bg-[#0b4f7d] px-8 py-2.5 text-sm font-semibold text-white disabled:opacity-40"
             >
-              {loading ? "Submitting..." : isLast ? "Submit Quiz" : "Next Question"}
+              {loading ? labels.submitting : isLast ? labels.submitQuiz : labels.nextQuestion}
             </button>
           </div>
         </div>

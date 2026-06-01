@@ -9,8 +9,8 @@ import Image from "next/image";
 
 type PlaceItem = {
   id: string;
-  titleEn: string;
-  descriptionEn: string;
+  title: string;
+  description: string;
   category: string;
   latitude: number;
   longitude: number;
@@ -33,7 +33,13 @@ function markerIcon(color: string) {
   });
 }
 
-export function MapCanvas({ places }: { places: PlaceItem[] }) {
+export function MapCanvas({
+  places,
+  labels,
+}: {
+  places: PlaceItem[];
+  labels: { learnMore: string; curatedSite: string; filterView: string; allSites: string };
+}) {
   const [activeFilter, setActiveFilter] = useState<(typeof categories)[number]>("all");
 
   const visible = useMemo(() => {
@@ -56,16 +62,16 @@ export function MapCanvas({ places }: { places: PlaceItem[] }) {
           >
             <Popup minWidth={260}>
               <div className="space-y-3">
-                <Image src="/images/AncientAkrotiriHeroImage.png" alt={place.titleEn} width={760} height={374} className="h-32 w-full rounded object-cover" />
+                <Image src="/images/AncientAkrotiriHeroImage.png" alt={place.title} width={760} height={374} className="h-32 w-full rounded object-cover" />
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-wide text-[#7a6841]">{place.category}</p>
-                  <h3 className="text-lg font-semibold text-[#1f252d]">{place.titleEn}</h3>
-                  <p className="mt-1 text-sm text-[#4b5562]">{place.descriptionEn}</p>
+                  <h3 className="text-lg font-semibold text-[#1f252d]">{place.title}</h3>
+                  <p className="mt-1 text-sm text-[#4b5562]">{place.description}</p>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-[#7b8592]">Curated Site</span>
+                  <span className="text-xs text-[#7b8592]">{labels.curatedSite}</span>
                   <Link href="/modules/history" className="rounded bg-[#0b4f7d] px-3 py-2 text-xs font-semibold text-white">
-                    Learn More
+                    {labels.learnMore}
                   </Link>
                 </div>
               </div>
@@ -75,7 +81,7 @@ export function MapCanvas({ places }: { places: PlaceItem[] }) {
       </MapContainer>
 
       <div className="absolute right-4 top-4 z-[500] rounded-md bg-white/95 p-3 shadow">
-        <p className="mb-2 text-[11px] font-bold tracking-wide text-[#535d6b]">FILTER VIEW</p>
+        <p className="mb-2 text-[11px] font-bold tracking-wide text-[#535d6b]">{labels.filterView}</p>
         <div className="space-y-1.5 text-xs">
           {categories.map((category) => (
             <button
@@ -92,7 +98,7 @@ export function MapCanvas({ places }: { places: PlaceItem[] }) {
                   opacity: activeFilter === category ? 1 : 0.4,
                 }}
               />
-              <span className="capitalize">{category === "all" ? "All Sites" : category}</span>
+              <span className="capitalize">{category === "all" ? labels.allSites : category}</span>
             </button>
           ))}
         </div>

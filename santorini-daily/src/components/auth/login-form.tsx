@@ -3,7 +3,13 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export function LoginForm({ nextPath }: { nextPath: string }) {
+export function LoginForm({
+  nextPath,
+  labels,
+}: {
+  nextPath: string;
+  labels: { email: string; password: string; invalid: string; unavailable: string; signingIn: string; signIn: string };
+}) {
   const router = useRouter();
   const [email, setEmail] = useState("student@santorini.local");
   const [password, setPassword] = useState("Password123!");
@@ -35,7 +41,7 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
       });
 
       if (!response.ok) {
-        setError("Invalid email or password.");
+        setError(labels.invalid);
         setLoading(false);
         return;
       }
@@ -43,7 +49,7 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
       router.push(nextPath);
       router.refresh();
     } catch {
-      setError("Unable to sign in right now. Try again.");
+      setError(labels.unavailable);
       setLoading(false);
     }
   }
@@ -51,7 +57,7 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
   return (
     <form className="mt-6 space-y-4" onSubmit={onSubmit}>
       <label className="block space-y-1">
-        <span className="text-sm font-medium text-[#1f252d]">Email</span>
+        <span className="text-sm font-medium text-[#1f252d]">{labels.email}</span>
         <input
           type="email"
           value={email}
@@ -62,7 +68,7 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
       </label>
 
       <label className="block space-y-1">
-        <span className="text-sm font-medium text-[#1f252d]">Password</span>
+        <span className="text-sm font-medium text-[#1f252d]">{labels.password}</span>
         <input
           type="password"
           value={password}
@@ -79,7 +85,7 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
         disabled={loading}
         className="w-full rounded bg-[#0b4f7d] px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
       >
-        {loading ? "Signing in..." : "Sign In"}
+        {loading ? labels.signingIn : labels.signIn}
       </button>
     </form>
   );

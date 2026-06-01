@@ -1,10 +1,12 @@
 import { prisma } from "@/lib/prisma";
-import { getLanguage, pickLocalized } from "@/lib/i18n";
+import { pickLocalized, resolveLanguage } from "@/lib/i18n";
 import { ok } from "@/lib/http";
+import { getCurrentUser } from "@/lib/auth";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const lang = getLanguage(searchParams.get("lang"));
+  const user = await getCurrentUser();
+  const lang = resolveLanguage(user?.preferredLanguage, searchParams.get("lang"));
   const modules = await prisma.module.findMany({ orderBy: { orderIndex: "asc" } });
 
   return ok(

@@ -5,16 +5,26 @@ import { usePathname } from "next/navigation";
 import { BookOpenText, Gauge, Home, MapPinned, Settings, Sparkles } from "lucide-react";
 import clsx from "clsx";
 
-const items = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/modules", label: "Modules", icon: BookOpenText },
-  { href: "/map", label: "Map", icon: MapPinned },
-  { href: "/dashboard", label: "Progress", icon: Gauge },
-  { href: "/settings", label: "Settings", icon: Settings },
-] as const;
+type SidebarNavProps = {
+  labels: {
+    home: string;
+    modules: string;
+    map: string;
+    progress: string;
+    settings: string;
+    aiTutorConsult: string;
+  };
+};
 
-export function SidebarNav() {
+export function SidebarNav({ labels }: SidebarNavProps) {
   const pathname = usePathname();
+  const items = [
+    { href: "/", label: labels.home, icon: Home },
+    { href: "/modules", label: labels.modules, icon: BookOpenText },
+    { href: "/map", label: labels.map, icon: MapPinned },
+    { href: "/dashboard", label: labels.progress, icon: Gauge },
+    { href: "/settings", label: labels.settings, icon: Settings },
+  ] as const;
 
   return (
     <aside className="sticky top-0 hidden h-screen w-[250px] shrink-0 border-r border-[#d9d6cf] bg-[#f2f0ea] lg:flex lg:flex-col">
@@ -50,7 +60,7 @@ export function SidebarNav() {
           type="button"
           className="flex w-full items-center justify-center gap-2 rounded bg-[#00426d] px-3 py-2 text-xs font-medium text-white"
         >
-          <Sparkles className="h-3.5 w-3.5" /> Consult AI Tutor
+          <Sparkles className="h-3.5 w-3.5" /> {labels.aiTutorConsult}
         </button>
       </div>
     </aside>
