@@ -26,7 +26,7 @@ export default async function ModuleDetailPage({ params }: { params: Promise<{ s
         <span className="rounded-full border border-[#ccd3dd] bg-[#edf2f7] px-2 py-1 text-[#375678]">Archaeology</span>
       </div>
 
-      <h1 className="max-w-[730px] text-6xl leading-[0.95] text-[#232a33]">{learningModule.titleEn}</h1>
+      <h1 className="max-w-[730px] text-4xl leading-[0.95] text-[#0b4f7d]">{learningModule.titleEn}</h1>
       <p className="mt-4 max-w-[760px] text-sm leading-7 text-[#5c6675]">{learningModule.descriptionEn}</p>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[2fr_1fr]">

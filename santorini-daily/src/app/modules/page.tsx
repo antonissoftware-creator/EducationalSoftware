@@ -18,7 +18,7 @@ export default async function ModulesPage() {
   return (
     <SiteShell>
       <section>
-        <h1 className="text-6xl leading-[0.95] text-[#0b4f7d]">Curated Archives</h1>
+        <h1 className="text-4xl leading-[0.95] text-[#0b4f7d]">Curated Archives</h1>
         <p className="mt-3 max-w-[760px] text-lg text-[#4f5968]">
           Explore the chronological artifacts and narratives of ancient Thera. Engage with modules at your own pace.
         </p>

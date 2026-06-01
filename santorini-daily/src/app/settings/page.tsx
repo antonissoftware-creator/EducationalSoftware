@@ -10,7 +10,7 @@ export default async function SettingsPage() {
 
   return (
     <SiteShell>
-      <h1 className="text-6xl leading-[0.95] text-[#232a33]">Configuration</h1>
+      <h1 className="text-4xl leading-[0.95] text-[#0b4f7d]">Configuration</h1>
       <p className="mt-2 text-sm text-[#5f6977]">Manage your archival experience and AI tutor preferences.</p>
 
       <div className="mt-8 space-y-8">

@@ -8,7 +8,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 
 const MapCanvas = dynamicImport(() => import("@/components/map/map-canvas").then((m) => m.MapCanvas), {
   ssr: false,
-  loading: () => <div className="h-[540px] animate-pulse rounded-md bg-[#d8d4cb]" />,
+  loading: () => <div className="h-full w-full animate-pulse bg-[#d8d4cb]" />,
 });
 
 type PlaceItem = {
@@ -38,5 +38,9 @@ export default function MapPage() {
     };
   }, []);
 
-  return <SiteShell>{places.length ? <MapCanvas places={places} /> : <div className="h-[540px] animate-pulse rounded-md bg-[#d8d4cb]" />}</SiteShell>;
+  return (
+    <SiteShell fullBleed>
+      {places.length ? <MapCanvas places={places} /> : <div className="h-full w-full animate-pulse bg-[#d8d4cb]" />}
+    </SiteShell>
+  );
 }

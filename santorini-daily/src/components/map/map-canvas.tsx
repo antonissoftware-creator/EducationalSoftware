@@ -42,8 +42,8 @@ export function MapCanvas({ places }: { places: PlaceItem[] }) {
   }, [places, activeFilter]);
 
   return (
-    <div className="relative overflow-hidden rounded-[10px] border border-[#d8d4cb]">
-      <MapContainer center={[36.41, 25.43]} zoom={11} className="h-[540px] w-full">
+    <div className="relative h-full w-full overflow-hidden">
+      <MapContainer center={[36.41, 25.43]} zoom={11} className="h-full w-full">
         <TileLayer
           attribution='&copy; Esri, Maxar, Earthstar Geographics'
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"

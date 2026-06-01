@@ -5,11 +5,13 @@ import { SidebarNav } from "@/components/layout/sidebar-nav";
 type SiteShellProps = {
   children: React.ReactNode;
   variant?: "home" | "app";
+  fullBleed?: boolean;
+  hideFooter?: boolean;
 };
 
 function Footer({ compact = false }: { compact?: boolean }) {
   return (
-    <footer className="mt-16 border-t border-[#d8d4cb] bg-[#e4e1da]">
+    <footer className="border-t border-[#d8d4cb] bg-[#e4e1da]">
       <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4 px-6 py-10 text-xs text-[#586271] md:flex-row md:items-end md:justify-between md:px-10">
         <div>
           <p className="font-serif text-[34px] leading-none text-[#0b4f7d]">Santorini Daily</p>
@@ -67,7 +69,7 @@ function MobileTopNav() {
   );
 }
 
-export function SiteShell({ children, variant = "app" }: SiteShellProps) {
+export function SiteShell({ children, variant = "app", fullBleed = false, hideFooter = false }: SiteShellProps) {
   if (variant === "home") {
     return (
       <div className="min-h-screen bg-[#f2f0ea] text-[#1e252c]">
@@ -81,10 +83,10 @@ export function SiteShell({ children, variant = "app" }: SiteShellProps) {
   return (
     <div className="min-h-screen bg-[#f2f0ea] text-[#1e252c] lg:flex">
       <SidebarNav />
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex flex-1 flex-col justify-between">
         <MobileTopNav />
-        <main className="mx-auto w-full max-w-[1040px] px-5 py-8 md:px-10 md:py-12">{children}</main>
-        <Footer compact />
+        <main className={fullBleed ? "w-full flex-1" : "mx-auto w-full max-w-[1040px] px-5 py-8 md:px-10 md:py-12"}>{children}</main>
+        {!hideFooter && <Footer compact />}
       </div>
     </div>
   );
