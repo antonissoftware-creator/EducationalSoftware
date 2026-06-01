@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 type SettingsFormProps = {
   initialLanguage: "en" | "el";
@@ -29,6 +30,9 @@ export function SettingsForm({
   initialHasGeminiKey,
   labels,
 }: SettingsFormProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [language, setLanguage] = useState<"en" | "el">(initialLanguage);
   const [aiEnabled, setAiEnabled] = useState(initialAiEnabled);
   const [geminiApiKey, setGeminiApiKey] = useState("");
@@ -67,6 +71,7 @@ export function SettingsForm({
       setHasGeminiKey(data.hasGeminiKey);
       setGeminiApiKey("");
       setMessage(labels.settingsSaved);
+      window.location.reload();
     } catch {
       setError(labels.saveUnavailable);
     } finally {
@@ -85,7 +90,13 @@ export function SettingsForm({
           </div>
           <select
             value={language}
-            onChange={(event) => setLanguage(event.target.value as "en" | "el")}
+            onChange={(event) => {
+              const nextLanguage = event.target.value as "en" | "el";
+              setLanguage(nextLanguage);
+              const params = new URLSearchParams(searchParams.toString());
+              params.set("lang", nextLanguage);
+              router.replace(`${pathname}?${params.toString()}`);
+            }}
             className="h-10 rounded border border-[#b9c0ca] bg-[#f2f0ea] px-3 text-sm"
           >
             <option value="en">English</option>
