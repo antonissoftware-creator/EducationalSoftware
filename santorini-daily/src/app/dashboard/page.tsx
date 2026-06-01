@@ -1,14 +1,26 @@
 export const dynamic = "force-dynamic";
 
 import { BookCopy, Lightbulb, Star } from "lucide-react";
+import { redirect } from "next/navigation";
 import { SiteShell } from "@/components/layout/site-shell";
 import { ProgressTrendChart } from "@/components/dashboard/progress-trend-chart";
+import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export default async function DashboardPage() {
-  const attempts = await prisma.quizAttempt.findMany({ orderBy: { completedAt: "asc" }, take: 5 });
+  const user = await getCurrentUser();
+  if (!user) redirect("/login?next=%2Fdashboard");
+
+  const attempts = await prisma.quizAttempt.findMany({
+    where: { userId: user.id, completedAt: { not: null } },
+    orderBy: { completedAt: "asc" },
+    take: 5,
+  });
+  const progressRows = await prisma.progress.findMany({ where: { userId: user.id } });
+
   const average = attempts.length ? attempts.reduce((sum, item) => sum + item.score, 0) / attempts.length : 0;
   const chart = attempts.map((item, idx) => ({ label: `Mod ${idx + 1}`, score: Math.round(item.score) }));
+  const completedModules = progressRows.filter((row) => row.isCompleted).length;
 
   return (
     <SiteShell>
@@ -26,7 +38,7 @@ export default async function DashboardPage() {
           <div className="mt-5 grid grid-cols-2 gap-3">
             <article className="rounded bg-white p-4">
               <BookCopy className="h-4 w-4 text-[#7d8795]" />
-              <p className="mt-2 font-serif text-4xl">4</p>
+              <p className="mt-2 font-serif text-4xl">{completedModules}</p>
               <p className="text-xs text-[#66707d]">COMPLETED MODULES</p>
             </article>
             <article className="rounded bg-white p-4">

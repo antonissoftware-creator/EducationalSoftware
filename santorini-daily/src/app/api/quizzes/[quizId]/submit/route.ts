@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { badRequest, notFound, ok } from "@/lib/http";
+import { getCurrentUser } from "@/lib/auth";
+import { badRequest, notFound, ok, unauthorized } from "@/lib/http";
 import { prisma } from "@/lib/prisma";
 
 const schema = z.object({
@@ -12,8 +13,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ quizId:
   const { quizId } = await params;
   const parsed = schema.safeParse(await req.json());
   if (!parsed.success) return badRequest("Invalid payload");
+  const user = await getCurrentUser();
+  if (!user) return unauthorized();
 
-  const attempt = await prisma.quizAttempt.findFirst({ where: { id: parsed.data.attemptId, quizId } });
+  const attempt = await prisma.quizAttempt.findFirst({ where: { id: parsed.data.attemptId, quizId, userId: user.id } });
   if (!attempt) return notFound("Attempt not found");
 
   const options = await prisma.questionOption.findMany({

@@ -1,11 +1,15 @@
 export const dynamic = "force-dynamic";
 
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { QuizStepper } from "@/components/quiz/quiz-stepper";
+import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export default async function ModuleQuizPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const user = await getCurrentUser();
+  if (!user) redirect(`/login?next=${encodeURIComponent(`/modules/${slug}/quiz`)}`);
+
   const quiz = await prisma.quiz.findFirst({
     where: { module: { slug }, type: "module" },
     include: {
@@ -21,6 +25,7 @@ export default async function ModuleQuizPage({ params }: { params: Promise<{ slu
   return (
     <div className="min-h-screen bg-[#f2f0ea] px-4 py-8 md:px-8 md:py-10">
       <QuizStepper
+        quizId={quiz.id}
         title={quiz.titleEn}
         questions={quiz.questions.map((question) => ({
           id: question.id,

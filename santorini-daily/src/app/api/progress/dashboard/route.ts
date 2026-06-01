@@ -1,13 +1,12 @@
-import { ensureGuestSession, getCurrentUser } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
 import { recommendationFromScore } from "@/lib/adaptive-learning";
-import { ok } from "@/lib/http";
+import { ok, unauthorized } from "@/lib/http";
 import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   const user = await getCurrentUser();
-  const attemptWhere = user
-    ? { userId: user.id }
-    : { guestSessionId: (await prisma.guestSession.findUnique({ where: { sessionToken: await ensureGuestSession() } }))?.id ?? "" };
+  if (!user) return unauthorized();
+  const attemptWhere = { userId: user.id };
 
   const attempts = await prisma.quizAttempt.findMany({ where: attemptWhere, orderBy: { completedAt: "desc" } });
   const avg = attempts.length ? attempts.reduce((sum, row) => sum + row.score, 0) / attempts.length : 0;

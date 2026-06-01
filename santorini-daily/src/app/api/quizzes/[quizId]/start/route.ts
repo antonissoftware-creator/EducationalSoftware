@@ -1,5 +1,5 @@
-import { ensureGuestSession, getCurrentUser } from "@/lib/auth";
-import { notFound, ok } from "@/lib/http";
+import { getCurrentUser } from "@/lib/auth";
+import { notFound, ok, unauthorized } from "@/lib/http";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(_: Request, { params }: { params: Promise<{ quizId: string }> }) {
@@ -8,14 +8,12 @@ export async function POST(_: Request, { params }: { params: Promise<{ quizId: s
   if (!quiz) return notFound("Quiz not found");
 
   const user = await getCurrentUser();
-  const guestToken = user ? null : await ensureGuestSession();
-  const guest = guestToken ? await prisma.guestSession.findUnique({ where: { sessionToken: guestToken } }) : null;
+  if (!user) return unauthorized();
 
   const attempt = await prisma.quizAttempt.create({
     data: {
       quizId,
-      userId: user?.id,
-      guestSessionId: guest?.id,
+      userId: user.id,
       score: 0,
       totalQuestions: quiz.questions.length,
       correctAnswers: 0,

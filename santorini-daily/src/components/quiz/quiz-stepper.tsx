@@ -1,23 +1,97 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import Link from "next/link";
+import { useMemo, useRef, useState } from "react";
 
 type QuizOption = { id: string; textEn: string };
 type QuizQuestion = { id: string; questionEn: string; options: QuizOption[] };
 
 export function QuizStepper({
+  quizId,
   title,
   questions,
 }: {
+  quizId: string;
   title: string;
   questions: QuizQuestion[];
 }) {
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<Record<string, string>>({});
+  const [attemptId, setAttemptId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState<{ score: number; correctAnswers: number; totalQuestions: number } | null>(null);
+  const [error, setError] = useState("");
+  const startedAtRef = useRef<number | null>(null);
 
   const current = questions[step];
   const progress = useMemo(() => ((step + 1) / questions.length) * 100, [questions.length, step]);
   const isLast = step === questions.length - 1;
+
+  async function ensureAttempt(): Promise<string | null> {
+    if (attemptId) return attemptId;
+    if (startedAtRef.current === null) startedAtRef.current = Date.now();
+    const response = await fetch(`/api/quizzes/${quizId}/start`, { method: "POST" });
+    if (!response.ok) return null;
+    const data = (await response.json()) as { attemptId: string };
+    setAttemptId(data.attemptId);
+    return data.attemptId;
+  }
+
+  async function onNext() {
+    setError("");
+    if (!isLast) {
+      setStep((prev) => Math.min(questions.length - 1, prev + 1));
+      return;
+    }
+
+    setLoading(true);
+    const currentAttemptId = await ensureAttempt();
+    if (!currentAttemptId) {
+      setLoading(false);
+      setError("Could not start quiz attempt.");
+      return;
+    }
+
+    const answers = questions.map((question) => ({
+      questionId: question.id,
+      selectedOptionId: selected[question.id] ?? null,
+    }));
+
+    const response = await fetch(`/api/quizzes/${quizId}/submit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        attemptId: currentAttemptId,
+        answers,
+        timeSpentSeconds: Math.floor((Date.now() - (startedAtRef.current ?? Date.now())) / 1000),
+      }),
+    });
+
+    if (!response.ok) {
+      setLoading(false);
+      setError("Could not submit quiz. Please try again.");
+      return;
+    }
+
+    const data = (await response.json()) as { score: number; correctAnswers: number; totalQuestions: number };
+    setSubmitted(data);
+    setLoading(false);
+  }
+
+  if (submitted) {
+    return (
+      <div className="mx-auto w-full max-w-[760px] rounded-lg border border-[#d8d4cb] bg-[#f8f7f4] p-8 text-center">
+        <p className="font-serif text-4xl leading-none text-[#0b4f7d]">Quiz Complete</p>
+        <p className="mt-4 text-5xl font-semibold text-[#232a33]">{Math.round(submitted.score)}%</p>
+        <p className="mt-2 text-sm text-[#5c6774]">
+          You answered {submitted.correctAnswers} out of {submitted.totalQuestions} correctly.
+        </p>
+        <Link href="/dashboard" className="mt-6 inline-flex rounded bg-[#0b4f7d] px-6 py-2.5 text-sm font-semibold text-white">
+          View Progress
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto w-full max-w-[760px]">
@@ -58,22 +132,24 @@ export function QuizStepper({
             })}
           </div>
 
+          {error ? <p className="text-sm text-[#b02a37]">{error}</p> : null}
+
           <div className="flex items-center justify-between border-t border-[#dfdbd3] pt-5">
             <button
               type="button"
               onClick={() => setStep((prev) => Math.max(0, prev - 1))}
-              disabled={step === 0}
+              disabled={step === 0 || loading}
               className="rounded border border-[#bfc7d1] px-4 py-2 text-sm disabled:opacity-40"
             >
               Previous
             </button>
             <button
               type="button"
-              onClick={() => setStep((prev) => Math.min(questions.length - 1, prev + 1))}
-              disabled={!selected[current.id]}
+              onClick={onNext}
+              disabled={!selected[current.id] || loading}
               className="rounded bg-[#0b4f7d] px-8 py-2.5 text-sm font-semibold text-white disabled:opacity-40"
             >
-              {isLast ? "Submit Quiz" : "Next Question"}
+              {loading ? "Submitting..." : isLast ? "Submit Quiz" : "Next Question"}
             </button>
           </div>
         </div>

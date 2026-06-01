@@ -67,7 +67,6 @@ export async function getCurrentUser() {
   });
 
   if (!session || session.expiresAt < new Date()) {
-    jar.delete(SESSION_COOKIE);
     return null;
   }
 
