@@ -9,21 +9,32 @@ export async function GET(req: Request) {
   const user = await getCurrentUser();
   const lang = resolveLanguage(user?.preferredLanguage, searchParams.get("lang"));
 
-  const places = await prisma.place.findMany({
-    where: category ? { category } : undefined,
-    orderBy: { titleEn: "asc" },
+  const modules = await prisma.module.findMany({
+    where: category ? { slug: category } : undefined,
+    orderBy: { orderIndex: "asc" },
+    include: {
+      places: {
+        orderBy: { titleEn: "asc" },
+        take: 1,
+      },
+    },
   });
 
   return ok(
-    places.map((place) => ({
-      id: place.id,
-      title: pickLocalized(place, "titleEn", "titleEl", lang),
-      description: pickLocalized(place, "descriptionEn", "descriptionEl", lang),
-      category: place.category,
-      latitude: place.latitude,
-      longitude: place.longitude,
-      imageUrl: place.imageUrl,
-      relatedModuleId: place.relatedModuleId,
-    }))
+    modules.flatMap((learningModule) => {
+      const place = learningModule.places[0];
+      if (!place) return [];
+
+      return {
+        id: learningModule.id,
+        title: pickLocalized(learningModule, "titleEn", "titleEl", lang),
+        description: pickLocalized(learningModule, "descriptionEn", "descriptionEl", lang),
+        category: learningModule.slug,
+        latitude: place.latitude,
+        longitude: place.longitude,
+        imageUrl: place.imageUrl,
+        moduleSlug: learningModule.slug,
+      };
+    })
   );
 }

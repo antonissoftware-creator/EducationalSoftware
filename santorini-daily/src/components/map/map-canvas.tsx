@@ -14,15 +14,23 @@ type PlaceItem = {
   category: string;
   latitude: number;
   longitude: number;
+  imageUrl: string | null;
+  moduleSlug: string;
 };
 
 const colorByCategory: Record<string, string> = {
   history: "#c69e14",
   volcano: "#0b4f7d",
-  villages: "#2e7b66",
+  culture: "#2e7b66",
 };
 
-const categories = ["all", "history", "volcano", "villages"] as const;
+const imageByModule: Record<string, string> = {
+  history: "/images/AncientAkrotiriModuleImage.png",
+  volcano: "/images/volcanicCalderaModuleImage.png",
+  culture: "/images/TraditionalModuleImage.png",
+};
+
+const categories = ["all", "history", "volcano", "culture"] as const;
 
 function markerIcon(color: string) {
   return L.divIcon({
@@ -62,7 +70,7 @@ export function MapCanvas({
           >
             <Popup minWidth={260}>
               <div className="space-y-3">
-                <Image src="/images/AncientAkrotiriHeroImage.png" alt={place.title} width={760} height={374} className="h-32 w-full rounded object-cover" />
+                <Image src={place.imageUrl ?? imageByModule[place.moduleSlug] ?? "/images/AncientAkrotiriModuleImage.png"} alt={place.title} width={760} height={374} className="h-32 w-full rounded object-cover" />
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-wide text-[#7a6841]">{place.category}</p>
                   <h3 className="text-lg font-semibold text-[#1f252d]">{place.title}</h3>
@@ -70,7 +78,7 @@ export function MapCanvas({
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-[#7b8592]">{labels.curatedSite}</span>
-                  <Link href="/modules/history" className="rounded bg-[#0b4f7d] px-3 py-2 text-xs font-semibold text-white">
+                  <Link href={`/modules/${place.moduleSlug}`} className="rounded bg-[#0b4f7d] px-3 py-2 text-xs font-semibold text-white">
                     {labels.learnMore}
                   </Link>
                 </div>

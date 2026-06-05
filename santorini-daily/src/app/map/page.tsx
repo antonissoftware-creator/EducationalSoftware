@@ -20,6 +20,8 @@ type PlaceItem = {
   category: string;
   latitude: number;
   longitude: number;
+  imageUrl: string | null;
+  moduleSlug: string;
 };
 
 export default function MapPage() {
