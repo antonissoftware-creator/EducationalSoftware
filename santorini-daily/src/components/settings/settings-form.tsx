@@ -18,6 +18,8 @@ type SettingsFormProps = {
     geminiKeyHelp: string;
     saveSettings: string;
     saving: string;
+    disconnect: string;
+    disconnecting: string;
     settingsSaved: string;
     saveError: string;
     saveUnavailable: string;
@@ -38,6 +40,7 @@ export function SettingsForm({
   const [geminiApiKey, setGeminiApiKey] = useState("");
   const [hasGeminiKey, setHasGeminiKey] = useState(initialHasGeminiKey);
   const [saving, setSaving] = useState(false);
+  const [disconnecting, setDisconnecting] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -76,6 +79,21 @@ export function SettingsForm({
       setError(labels.saveUnavailable);
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function onDisconnect() {
+    setDisconnecting(true);
+    setMessage("");
+    setError("");
+
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+      router.push("/login");
+      router.refresh();
+    } catch {
+      setError(labels.saveUnavailable);
+      setDisconnecting(false);
     }
   }
 
@@ -143,10 +161,18 @@ export function SettingsForm({
       {error ? <p className="text-sm text-[#b02a37]">{error}</p> : null}
       {message ? <p className="text-sm text-[#0f6b45]">{message}</p> : null}
 
-      <div className="flex justify-end">
+      <div className="flex flex-wrap justify-end gap-3">
+        <button
+          type="button"
+          onClick={onDisconnect}
+          disabled={saving || disconnecting}
+          className="rounded border border-[#b02a37] px-8 py-3 text-sm font-semibold text-[#b02a37] disabled:opacity-50"
+        >
+          {disconnecting ? labels.disconnecting : labels.disconnect}
+        </button>
         <button
           type="submit"
-          disabled={saving}
+          disabled={saving || disconnecting}
           className="rounded bg-[#0b4f7d] px-8 py-3 text-sm font-semibold text-white disabled:opacity-50"
         >
           {saving ? labels.saving : labels.saveSettings}

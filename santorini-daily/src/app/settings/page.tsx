@@ -37,6 +37,8 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
           geminiKeyHelp: t.gemini_key_help,
           saveSettings: t.save_settings,
           saving: t.saving,
+          disconnect: t.disconnect,
+          disconnecting: t.disconnecting,
           settingsSaved: t.settings_saved,
           saveError: t.save_error,
           saveUnavailable: t.save_unavailable,
