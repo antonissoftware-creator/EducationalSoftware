@@ -38,6 +38,8 @@ export default async function ModuleQuizPage({
       <QuizStepper
         quizId={quiz.id}
         title={pickLocalized(quiz, "titleEn", "titleEl", lang)}
+        exitHref={`/modules/${slug}`}
+        exitLabel={t.exit_quiz}
         questions={quiz.questions.map((question) => ({
           id: question.id,
           questionEn: pickLocalized(question, "questionEn", "questionEl", lang),

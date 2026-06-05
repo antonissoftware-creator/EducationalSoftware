@@ -30,6 +30,8 @@ export function QuizStepper({
   labels,
   resultHref = "/dashboard",
   resultLabel,
+  exitHref,
+  exitLabel,
   onResultClick,
 }: {
   quizId?: string;
@@ -39,6 +41,8 @@ export function QuizStepper({
   labels: QuizLabels;
   resultHref?: string;
   resultLabel?: string;
+  exitHref?: string;
+  exitLabel?: string;
   onResultClick?: () => void;
 }) {
   const [step, setStep] = useState(0);
@@ -152,7 +156,16 @@ export function QuizStepper({
   }
 
   return (
-    <div className="mx-auto w-full max-w-[760px]">
+    <div className="relative mx-auto w-full max-w-[760px]">
+      {exitHref ? (
+        <Link
+          href={exitHref}
+          className="absolute left-0 top-0 rounded border border-[#bfc7d1] bg-[#f8f7f4] px-4 py-2 text-sm font-semibold text-[#0b4f7d]"
+        >
+          {exitLabel ?? "Exit"}
+        </Link>
+      ) : null}
+
       <div className="mb-8 text-center">
         <div className="mt-8 inline-block rounded-full border border-[#cfccd7] bg-[#eef3f7] px-4 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#0b4f7d]">
           {title}
