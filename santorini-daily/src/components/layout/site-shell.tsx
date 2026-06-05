@@ -42,7 +42,6 @@ function HomeTopBar({ lang = "en" }: { lang?: Language }) {
           Santorini Daily
         </Link>
         <div className="flex items-center gap-3">
-          <CircleUserRound className="h-5 w-5 text-[#465166]" />
           <Link href="/ai-tutor" className="rounded-lg bg-[#0b4f7d] px-4 py-2 text-sm font-medium text-white">
             {t.ai_tutor}
           </Link>
