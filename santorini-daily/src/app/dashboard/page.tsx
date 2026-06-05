@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { BookCopy, Lightbulb, Star } from "lucide-react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SiteShell } from "@/components/layout/site-shell";
 import { ProgressTrendChart } from "@/components/dashboard/progress-trend-chart";
@@ -74,7 +75,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 <li>• {t.pottery}</li>
                 <li>• {t.timeline}</li>
               </ul>
-              <button type="button" className="mt-5 w-full rounded border border-[#8ca5be] px-4 py-2 text-sm font-semibold text-[#0b4f7d]">{t.generate_practice}</button>
+              <Link href="/ai-tutor" className="mt-5 inline-flex w-full justify-center rounded border border-[#8ca5be] px-4 py-2 text-sm font-semibold text-[#0b4f7d]">{t.generate_practice}</Link>
             </article>
 
             <article className="rounded-md border border-[#d8d4cb] bg-[#f8f7f4] p-4">

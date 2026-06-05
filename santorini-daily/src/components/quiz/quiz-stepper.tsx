@@ -24,14 +24,22 @@ type QuizLabels = {
 
 export function QuizStepper({
   quizId,
+  quizToken,
   title,
   questions,
   labels,
+  resultHref = "/dashboard",
+  resultLabel,
+  onResultClick,
 }: {
-  quizId: string;
+  quizId?: string;
+  quizToken?: string;
   title: string;
   questions: QuizQuestion[];
   labels: QuizLabels;
+  resultHref?: string;
+  resultLabel?: string;
+  onResultClick?: () => void;
 }) {
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<Record<string, string>>({});
@@ -45,8 +53,14 @@ export function QuizStepper({
   const current = questions[step];
   const progress = useMemo(() => ((step + 1) / questions.length) * 100, [questions.length, step]);
   const isLast = step === questions.length - 1;
+  const isTemporaryQuiz = Boolean(quizToken);
 
   async function ensureAttempt(startedAtMs: number): Promise<string | null> {
+    if (isTemporaryQuiz) {
+      if (startedAtRef.current === null) startedAtRef.current = startedAtMs;
+      return "temporary";
+    }
+    if (!quizId) return null;
     if (attemptId) return attemptId;
     if (attemptPromiseRef.current) return attemptPromiseRef.current;
     if (startedAtRef.current === null) startedAtRef.current = startedAtMs;
@@ -90,11 +104,12 @@ export function QuizStepper({
       selectedOptionId: selected[question.id] ?? null,
     }));
 
-    const response = await fetch(`/api/quizzes/${quizId}/submit`, {
+    const response = await fetch(isTemporaryQuiz ? "/api/ai/tutor/submit" : `/api/quizzes/${quizId}/submit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        attemptId: currentAttemptId,
+        attemptId: isTemporaryQuiz ? undefined : currentAttemptId,
+        quizToken,
         answers,
         timeSpentSeconds: Math.floor((event.timeStamp - (startedAtRef.current ?? event.timeStamp)) / 1000),
       }),
@@ -119,9 +134,19 @@ export function QuizStepper({
         <p className="mt-2 text-sm text-[#5c6774]">
           {labels.youAnswered} {submitted.correctAnswers} {labels.outOf} {submitted.totalQuestions} {labels.correctly}
         </p>
-        <Link href="/dashboard" className="mt-6 inline-flex rounded bg-[#0b4f7d] px-6 py-2.5 text-sm font-semibold text-white">
-          {labels.viewProgress}
-        </Link>
+        {onResultClick ? (
+          <button
+            type="button"
+            onClick={onResultClick}
+            className="mt-6 inline-flex rounded bg-[#0b4f7d] px-6 py-2.5 text-sm font-semibold text-white"
+          >
+            {resultLabel ?? labels.viewProgress}
+          </button>
+        ) : (
+          <Link href={resultHref} className="mt-6 inline-flex rounded bg-[#0b4f7d] px-6 py-2.5 text-sm font-semibold text-white">
+            {resultLabel ?? labels.viewProgress}
+          </Link>
+        )}
       </div>
     );
   }
@@ -129,7 +154,6 @@ export function QuizStepper({
   return (
     <div className="mx-auto w-full max-w-[760px]">
       <div className="mb-8 text-center">
-        <p className="font-serif text-4xl leading-none text-[#0b4f7d]">Santorini Daily</p>
         <div className="mt-8 inline-block rounded-full border border-[#cfccd7] bg-[#eef3f7] px-4 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#0b4f7d]">
           {title}
         </div>

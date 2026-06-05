@@ -1,10 +1,14 @@
 import { z } from "zod";
-import { generateAiTutorQuiz, isAiEnabledForUser } from "@/lib/ai";
 import { getCurrentUser } from "@/lib/auth";
 import { badRequest, ok, unauthorized } from "@/lib/http";
+import { isAiEnabledForUser, scoreAiTutorQuiz } from "@/lib/ai";
 import { prisma } from "@/lib/prisma";
 
-const schema = z.object({ conceptId: z.enum(["history", "volcano", "culture"]), lang: z.enum(["en", "el"]).default("en") });
+const schema = z.object({
+  quizToken: z.string().min(20),
+  answers: z.array(z.object({ questionId: z.string(), selectedOptionId: z.string().nullable() })),
+  timeSpentSeconds: z.number().int().min(0).default(0),
+});
 
 export async function POST(req: Request) {
   const user = await getCurrentUser();
@@ -18,14 +22,14 @@ export async function POST(req: Request) {
 
   try {
     return ok(
-      await generateAiTutorQuiz({
+      await scoreAiTutorQuiz({
         apiKey: settings.geminiApiKeyEncrypted,
-        conceptId: parsed.data.conceptId,
-        lang: parsed.data.lang,
+        quizToken: parsed.data.quizToken,
         userId: user.id,
+        answers: parsed.data.answers,
       })
     );
   } catch {
-    return badRequest("Could not generate quiz");
+    return badRequest("Could not submit quiz");
   }
 }

@@ -43,9 +43,9 @@ function HomeTopBar({ lang = "en" }: { lang?: Language }) {
         </Link>
         <div className="flex items-center gap-3">
           <CircleUserRound className="h-5 w-5 text-[#465166]" />
-          <button type="button" className="rounded-lg bg-[#0b4f7d] px-4 py-2 text-sm font-medium text-white">
+          <Link href="/ai-tutor" className="rounded-lg bg-[#0b4f7d] px-4 py-2 text-sm font-medium text-white">
             {t.ai_tutor}
-          </button>
+          </Link>
         </div>
       </div>
     </header>
@@ -60,9 +60,9 @@ function MobileTopNav({ lang = "en" }: { lang?: Language }) {
         <Link href="/" className="font-serif text-[30px] leading-none text-[#0b4f7d]">
           Santorini Daily
         </Link>
-        <button type="button" className="inline-flex items-center gap-2 rounded bg-[#00426d] px-3 py-2 text-xs text-white">
+        <Link href="/ai-tutor" className="inline-flex items-center gap-2 rounded bg-[#00426d] px-3 py-2 text-xs text-white">
           <Sparkles className="h-3.5 w-3.5" /> {t.ai_tutor}
-        </button>
+        </Link>
       </div>
       <nav className="mt-3 flex flex-wrap gap-3 text-xs text-[#2e3742]">
         <Link href="/">{t.nav_home}</Link>

@@ -56,12 +56,12 @@ export function SidebarNav({ labels }: SidebarNavProps) {
       </nav>
 
       <div className="mt-auto p-4">
-        <button
-          type="button"
+        <Link
+          href="/ai-tutor"
           className="flex w-full items-center justify-center gap-2 rounded bg-[#00426d] px-3 py-2 text-xs font-medium text-white"
         >
           <Sparkles className="h-3.5 w-3.5" /> {labels.aiTutorConsult}
-        </button>
+        </Link>
       </div>
     </aside>
   );
