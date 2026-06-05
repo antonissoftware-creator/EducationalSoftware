@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { MouseEvent } from "react";
 import { useMemo, useRef, useState } from "react";
 
 type QuizOption = { id: string; textEn: string };
@@ -39,22 +40,37 @@ export function QuizStepper({
   const [submitted, setSubmitted] = useState<{ score: number; correctAnswers: number; totalQuestions: number } | null>(null);
   const [error, setError] = useState("");
   const startedAtRef = useRef<number | null>(null);
+  const attemptPromiseRef = useRef<Promise<string | null> | null>(null);
 
   const current = questions[step];
   const progress = useMemo(() => ((step + 1) / questions.length) * 100, [questions.length, step]);
   const isLast = step === questions.length - 1;
 
-  async function ensureAttempt(): Promise<string | null> {
+  async function ensureAttempt(startedAtMs: number): Promise<string | null> {
     if (attemptId) return attemptId;
-    if (startedAtRef.current === null) startedAtRef.current = Date.now();
-    const response = await fetch(`/api/quizzes/${quizId}/start`, { method: "POST" });
-    if (!response.ok) return null;
-    const data = (await response.json()) as { attemptId: string };
-    setAttemptId(data.attemptId);
-    return data.attemptId;
+    if (attemptPromiseRef.current) return attemptPromiseRef.current;
+    if (startedAtRef.current === null) startedAtRef.current = startedAtMs;
+    attemptPromiseRef.current = fetch(`/api/quizzes/${quizId}/start`, { method: "POST" })
+      .then(async (response) => {
+        if (!response.ok) return null;
+        const data = (await response.json()) as { attemptId: string };
+        setAttemptId(data.attemptId);
+        return data.attemptId;
+      })
+      .finally(() => {
+        attemptPromiseRef.current = null;
+      });
+    return attemptPromiseRef.current;
   }
 
-  async function onNext() {
+  async function onSelect(questionId: string, optionId: string, timestamp: number) {
+    setError("");
+    setSelected((prev) => ({ ...prev, [questionId]: optionId }));
+    const currentAttemptId = await ensureAttempt(timestamp);
+    if (!currentAttemptId) setError(labels.quizStartError);
+  }
+
+  async function onNext(event: MouseEvent<HTMLButtonElement>) {
     setError("");
     if (!isLast) {
       setStep((prev) => Math.min(questions.length - 1, prev + 1));
@@ -62,7 +78,7 @@ export function QuizStepper({
     }
 
     setLoading(true);
-    const currentAttemptId = await ensureAttempt();
+    const currentAttemptId = await ensureAttempt(event.timeStamp);
     if (!currentAttemptId) {
       setLoading(false);
       setError(labels.quizStartError);
@@ -80,7 +96,7 @@ export function QuizStepper({
       body: JSON.stringify({
         attemptId: currentAttemptId,
         answers,
-        timeSpentSeconds: Math.floor((Date.now() - (startedAtRef.current ?? Date.now())) / 1000),
+        timeSpentSeconds: Math.floor((event.timeStamp - (startedAtRef.current ?? event.timeStamp)) / 1000),
       }),
     });
 
@@ -137,7 +153,9 @@ export function QuizStepper({
                 <button
                   key={option.id}
                   type="button"
-                  onClick={() => setSelected((prev) => ({ ...prev, [current.id]: option.id }))}
+                  onClick={(event) => {
+                    void onSelect(current.id, option.id, event.timeStamp);
+                  }}
                   className={`flex w-full items-center gap-3 rounded border px-4 py-4 text-left text-[15px] ${
                     active ? "border-[#0b4f7d] bg-[#edf4fa]" : "border-[#c8ced6] bg-[#f8f7f4]"
                   }`}

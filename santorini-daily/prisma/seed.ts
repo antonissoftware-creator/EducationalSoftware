@@ -64,8 +64,8 @@ async function main() {
       {
         titleEn: "Origins and Legends",
         titleEl: "Απαρχές και Θρύλοι",
-        contentEn: "Ancient stories linked Santorini to Atlantis and sea-faring Minoan worlds.",
-        contentEl: "Αρχαίοι μύθοι συνέδεσαν τη Σαντορίνη με την Ατλαντίδα και τον θαλασσοπόρο μινωικό κόσμο.",
+        contentEn: "Ancient stories linked Santorini to Atlantis and Minoan worlds.",
+        contentEl: "Αρχαίοι μύθοι συνέδεσαν τη Σαντορίνη με την Ατλαντίδα και τον μινωικό κόσμο.",
       },
       {
         titleEn: "Akrotiri Settlement",
@@ -83,7 +83,7 @@ async function main() {
         titleEn: "Classical and Hellenistic Thera",
         titleEl: "Κλασική και Ελληνιστική Θήρα",
         contentEn: "Later communities built sanctuaries and civic spaces on Mesa Vouno.",
-        contentEl: "Αργότερες κοινότητες δημιούργησαν ιερά και δημόσιους χώρους στη Μέσα Βουνό.",
+        contentEl: "Μεταγενέστερες κοινότητες έχτισαν ιερά και δημόσιους χώρους στο Μέσα Βουνό.",
       },
       {
         titleEn: "Archaeology Today",
@@ -102,14 +102,14 @@ async function main() {
       {
         titleEn: "How the Caldera Formed",
         titleEl: "Πώς Σχηματίστηκε η Καλντέρα",
-        contentEn: "Explosive eruptions and chamber collapse created Santorini's dramatic ring shape.",
-        contentEl: "Εκρηκτικές εκρήξεις και κατάρρευση θαλάμου δημιούργησαν το εντυπωσιακό δακτυλιοειδές σχήμα της Σαντορίνης.",
+        contentEn: "Eruptions and chamber collapse created Santorini's dramatic ring shape.",
+        contentEl: "Οι ηφαιστειακές εκρήξεις και η κατάρρευση του ηφαιστειακού θαλάμου δημιούργησαν το εντυπωσιακό δακτυλιοειδές σχήμα της Σαντορίνης.",
       },
       {
         titleEn: "Nea and Palea Kameni",
         titleEl: "Νέα και Παλαιά Καμένη",
         contentEn: "These volcanic islets continue to record younger eruptive activity.",
-        contentEl: "Αυτές οι ηφαιστειακές νησίδες καταγράφουν νεότερη εκρηκτική δραστηριότητα.",
+        contentEl: "Αυτές οι ηφαιστειακές νησίδες συνεχίζουν να μαρτυρούν τη νεότερη ηφαιστειακή δραστηριότητα.",
       },
       {
         titleEn: "Hazards and Monitoring",
@@ -121,7 +121,7 @@ async function main() {
         titleEn: "Environment and Resilience",
         titleEl: "Περιβάλλον και Ανθεκτικότητα",
         contentEn: "Communities adapt tourism and infrastructure to a dynamic volcanic landscape.",
-        contentEl: "Οι κοινότητες προσαρμόζουν τον τουρισμό και τις υποδομές σε ένα δυναμικό ηφαιστειακό τοπίο.",
+        contentEl: "Οι κοινότητες προσαρμόζουν τον τουρισμό και τις υποδομές τους σε ένα δυναμικό ηφαιστειακό τοπίο.",
       },
     ],
     culture: [
@@ -189,11 +189,11 @@ async function main() {
       },
       {
         questionEn: "True or False: Ancient Thera was built on Mesa Vouno.",
-        questionEl: "Σωστό ή Λάθος: Η Αρχαία Θήρα χτίστηκε στη Μέσα Βουνό.",
+        questionEl: "Σωστό ή Λάθος: Η Αρχαία Θήρα χτίστηκε στο Μέσα Βουνό.",
         category: "history",
         difficulty: "beginner",
         explanationEn: "Ancient Thera occupied Mesa Vouno ridge in later periods.",
-        explanationEl: "Η Αρχαία Θήρα αναπτύχθηκε στη ράχη της Μέσα Βουνό σε μεταγενέστερες περιόδους.",
+        explanationEl: "Η Αρχαία Θήρα αναπτύχθηκε στη ράχη του Μέσα Βουνού σε μεταγενέστερες περιόδους.",
         options: [
           { textEn: "True", textEl: "Σωστό", isCorrect: true },
           { textEn: "False", textEl: "Λάθος", isCorrect: false },
@@ -210,7 +210,7 @@ async function main() {
           { textEn: "Excellent preservation of daily life", textEl: "Εξαιρετική διατήρηση της καθημερινής ζωής", isCorrect: true },
           { textEn: "Largest Roman amphitheater", textEl: "Μεγαλύτερο ρωμαϊκό αμφιθέατρο", isCorrect: false },
           { textEn: "Only site with marble temples", textEl: "Μοναδικός χώρος με μαρμάρινους ναούς", isCorrect: false },
-          { textEn: "No trade connections", textEl: "Χωρίς εμπορικές συνδέσεις", isCorrect: false },
+          { textEn: "No trade connections", textEl: "Δεν υπήρχαν εμπορικές συνδέσεις", isCorrect: false },
         ],
       },
       {
@@ -241,7 +241,7 @@ async function main() {
       },
       {
         questionEn: "Who led major excavations at Akrotiri beginning in 1967?",
-        questionEl: "Ποιος ηγήθηκε των μεγάλων ανασκαφών στο Ακρωτήρι που ξεκίνησαν το 1967;",
+        questionEl: "Ποιος ηγήθηκε των μεγάλων ανασκαφών στο Ακρωτήρι, οι οποίες ξεκίνησαν το 1967;",
         category: "history",
         difficulty: "intermediate",
         explanationEn: "Spyridon Marinatos initiated the modern excavation campaign.",
@@ -257,7 +257,7 @@ async function main() {
     volcano: [
       {
         questionEn: "What geologic process drives volcanism in Santorini?",
-        questionEl: "Ποια γεωλογική διαδικασία οδηγεί τον ηφαιστεισμό στη Σαντορίνη;",
+        questionEl: "Ποια γεωλογική διεργασία προκαλεί την ηφαιστειακή δραστηριότητα στη Σαντορίνη;",
         category: "volcano",
         difficulty: "beginner",
         explanationEn: "Subduction in the South Aegean arc fuels magma generation.",
@@ -297,7 +297,7 @@ async function main() {
       },
       {
         questionEn: "Which monitoring method helps track volcanic unrest?",
-        questionEl: "Ποια μέθοδος παρακολούθησης βοηθά στην ανίχνευση ηφαιστειακής ανησυχίας;",
+        questionEl: "Ποια μέθοδος παρακολούθησης βοηθά στην ανίχνευση ηφαιστειακής δραστηριότητας;",
         category: "volcano",
         difficulty: "intermediate",
         explanationEn: "Seismic monitoring captures earthquake swarms tied to magma movement.",
@@ -379,7 +379,7 @@ async function main() {
       },
       {
         questionEn: "Which village is known for sunset views and white-blue architecture?",
-        questionEl: "Ποιο χωριό είναι γνωστό για τα ηλιοβασιλέματα και τη λευκο-μπλε αρχιτεκτονική;",
+        questionEl: "Ποιο χωριό είναι γνωστό για τα ηλιοβασιλέματα και τη λευκή-μπλε αρχιτεκτονική;",
         category: "villages",
         difficulty: "beginner",
         explanationEn: "Oia is internationally recognized for sunset viewpoints and architecture.",
@@ -476,14 +476,14 @@ async function main() {
             category,
             difficulty: "intermediate",
             explanationEn: "Review all modules to reinforce this concept.",
-            explanationEl: "Ανασκόπησε όλες τις ενότητες για να ενισχύσεις αυτή την έννοια.",
+            explanationEl: "Μελέτησε ξανά όλες τις ενότητες για να εμπεδώσεις αυτή την έννοια.",
             orderIndex: index + 1,
             options: {
               create: [
                 { textEn: "Correct answer", textEl: "Σωστή απάντηση", isCorrect: true, orderIndex: 1 },
-                { textEn: "Distractor A", textEl: "Αποπροσανατολιστική Α", isCorrect: false, orderIndex: 2 },
-                { textEn: "Distractor B", textEl: "Αποπροσανατολιστική Β", isCorrect: false, orderIndex: 3 },
-                { textEn: "Distractor C", textEl: "Αποπροσανατολιστική Γ", isCorrect: false, orderIndex: 4 },
+                { textEn: "Distractor A", textEl: "Λανθασμένη επιλογή Α", isCorrect: false, orderIndex: 2 },
+                { textEn: "Distractor B", textEl: "Λανθασμένη επιλογή Α", isCorrect: false, orderIndex: 3 },
+                { textEn: "Distractor C", textEl: "Λανθασμένη επιλογή Α", isCorrect: false, orderIndex: 4 },
               ],
             },
           };

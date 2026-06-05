@@ -16,7 +16,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ quizId:
   const user = await getCurrentUser();
   if (!user) return unauthorized();
 
-  const attempt = await prisma.quizAttempt.findFirst({ where: { id: parsed.data.attemptId, quizId, userId: user.id } });
+  const attempt = await prisma.quizAttempt.findFirst({
+    where: { id: parsed.data.attemptId, quizId, userId: user.id },
+    include: { quiz: { include: { module: { include: { _count: { select: { sections: true } } } } } } },
+  });
   if (!attempt) return notFound("Attempt not found");
 
   const options = await prisma.questionOption.findMany({
@@ -46,15 +49,36 @@ export async function POST(req: Request, { params }: { params: Promise<{ quizId:
   const total = parsed.data.answers.length || 1;
   const score = (correct / total) * 100;
 
-  await prisma.quizAttempt.update({
-    where: { id: attempt.id },
-    data: {
-      correctAnswers: correct,
-      totalQuestions: total,
-      score,
-      completedAt: new Date(),
-      timeSpentSeconds: parsed.data.timeSpentSeconds,
-    },
+  await prisma.$transaction(async (tx) => {
+    await tx.quizAttempt.update({
+      where: { id: attempt.id },
+      data: {
+        correctAnswers: correct,
+        totalQuestions: total,
+        score,
+        completedAt: new Date(),
+        timeSpentSeconds: parsed.data.timeSpentSeconds,
+      },
+    });
+
+    if (attempt.quiz.moduleId) {
+      await tx.progress.upsert({
+        where: { userId_moduleId: { userId: user.id, moduleId: attempt.quiz.moduleId } },
+        update: {
+          completedSections: attempt.quiz.module?._count.sections ?? 0,
+          completionPercentage: 100,
+          isCompleted: true,
+          lastVisitedAt: new Date(),
+        },
+        create: {
+          userId: user.id,
+          moduleId: attempt.quiz.moduleId,
+          completedSections: attempt.quiz.module?._count.sections ?? 0,
+          completionPercentage: 100,
+          isCompleted: true,
+        },
+      });
+    }
   });
 
   return ok({ score, correctAnswers: correct, totalQuestions: total });
