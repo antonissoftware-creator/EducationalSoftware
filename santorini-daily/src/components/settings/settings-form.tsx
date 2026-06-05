@@ -42,7 +42,7 @@ export function SettingsForm({
   const [error, setError] = useState("");
 
   const placeholder = useMemo(
-    () => (hasGeminiKey ? "•••••• configured (enter new key to replace)" : "AIzaSy..."),
+    () => (hasGeminiKey ? "••••••" : "AIzaSy..."),
     [hasGeminiKey]
   );
 
